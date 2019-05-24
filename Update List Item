@@ -1,0 +1,36 @@
+//we need to pass id so that we can update particular item here
+function updateRequests(id)
+{
+  var itemProperties = {
+			        'ColumnName': data,
+			        '__metadata': { "type": getItemTypeForListName(ListName) }
+			    };
+   $.ajax
+        ({
+            url: _spPageContextInfo.webAbsoluteUrl + "/_api/web/lists/GetByTitle('" + ListName + "')/items('" + id + "')",
+            type: "POST",
+            async: true,
+            processData: false,
+            contentType: "application/json;odata=verbose",
+            data: JSON.stringify(itemProperties),
+            headers:
+            {
+                "Accept": "application/json;odata=verbose",
+                "Content-Type": "application/json;odata=verbose",
+                "X-RequestDigest": $("#__REQUESTDIGEST").val(),
+                "IF-MATCH": "*",
+                "X-HTTP-Method": "MERGE"
+            },
+            success: function (data, status, xhr) {
+              //code
+            },
+            error: function (data) {
+              //code
+            },
+
+    });
+}
+
+function getItemTypeForListName(name) {
+    return "SP.Data." + name.charAt(0).toUpperCase() + name.slice(1) + "ListItem";
+}
