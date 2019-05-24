@@ -1,0 +1,19 @@
+function getCurrentUser() {
+    $.ajax({
+        url: _spPageContextInfo.webAbsoluteUrl + "/_api/web/CurrentUser",
+        async: false,
+        method: "GET",
+        headers: { "Accept": "application/json; odata=verbose" },
+        success: function (data) {
+            //data contains all the necessary Information about the user logged In
+        },
+        error: function (data) {
+            //code
+        }
+    });
+}
+
+/*
+To get to which groups the User belongs to you need to expand the 'url' above in the following way
+  url: _spPageContextInfo.webAbsoluteUrl + "/_api/web/CurrentUser?$select=Groups/Title&$expand=Groups",
+*/
