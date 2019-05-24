@@ -1,0 +1,35 @@
+function createItem() {
+	
+    var listItemUri = _spPageContextInfo.webAbsoluteUrl + "/_api/web/lists/getbytitle('" + ListName + "')/items";
+    var itemProperties = {
+        'Title': value,
+        //List Items
+        "__metadata": {
+            "type": getItemTypeForListName(ListName)
+        }
+    };
+    $.ajax({
+        url: listItemUri,
+        type: "POST",
+        contentType: "application/json;odata=verbose",
+        dataType: "json",
+        data: JSON.stringify(itemProperties),
+        async: false,
+        headers: {
+            "Accept": "application/json;odata=verbose",
+            "X-RequestDigest": $("#__REQUESTDIGEST").val()
+        },
+        success: function (data) {
+            //code
+        },
+        error: function (data) {
+           //code
+        },
+
+    });
+}
+
+function getItemTypeForListName(name) {
+    return "SP.Data." + name.charAt(0).toUpperCase() + name.slice(1) + "ListItem";
+}
+
