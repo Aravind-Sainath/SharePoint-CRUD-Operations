@@ -1,7 +1,7 @@
 function retriveAllItems() {
     $.ajax
         ({
-            url: Weburl + "/_api/web/lists/GetByTitle('" + List + "')/items?$top=5000",
+            url: _spPageContextInfo.webAbsoluteUrl + "/_api/web/lists/GetByTitle('" + List + "')/items?$top=5000",
             method: "GET",
             async: false,
             headers: { "Accept": "application/json; odata=verbose" },
