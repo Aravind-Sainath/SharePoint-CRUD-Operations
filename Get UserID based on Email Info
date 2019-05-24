@@ -1,0 +1,16 @@
+function GetUserIdToEmail(emailaddress) {
+
+    var siteUrl = _spPageContextInfo.siteAbsoluteUrl;
+    $.ajax({
+        url: siteUrl + "/_api/web/siteusers/getbyemail(@v)?@v='" + emailaddress + "'",
+        method: "GET",
+        async: false,
+        headers: { "Accept": "application/json; odata=verbose" },
+        success: function (data) {
+            UserID=(data.d.Id);
+        },
+        error: function (data) {
+            console.log(JSON.stringify(data));
+        }
+    });
+}
