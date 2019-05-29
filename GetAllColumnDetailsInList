@@ -1,0 +1,16 @@
+function getFields(){
+	var url = "/_api/web/lists/getbytitle('listName')/Fields?$filter=Hidden eq false and ReadOnlyField eq false";
+    return $.ajax({
+        url: _spPageContextInfo.webAbsoluteUrl + url,
+        type: "GET",
+        headers: {
+            "accept": "application/json;odata=verbose",
+        },
+        success: function(data){
+          //data contains all the columns along with their internal Names
+        },
+        error: function(err){
+        	console.log(err);
+        }
+    });
+}
