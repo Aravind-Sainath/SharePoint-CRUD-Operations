@@ -1,0 +1,72 @@
+<link rel="stylesheet" href="https://bootstrap/bootstrap4.min.css"
+    rel="stylesheet">
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.9.4/xlsx.full.min.js" type="text/javascript"></script>
+<script src="https://bootstrap/bootstrap4.min.js" type="text/javascript"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+    integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+    crossorigin="anonymous"></script>
+
+<script>
+    var InnrHtmlgrp = $("#Comments");var docType = $("input[type='radio']:checked").val();
+    $(document).ready(function () {
+        if (!window.FileReader) {
+            alert('This browser does not support the FileReader API.');
+        }
+       
+        $('input[type="file"]').change(function (e) {
+            var fileName = e.target.files[0].name;
+            $('.custom-file-label').html(fileName);
+            $('.help-block').hide();
+            var files = e.target.files, file;
+            if (!files || files.length == 0) return;
+            file = files[0];
+            var fileReader = new FileReader();
+            fileReader.onload = function (e) {
+                var binary = "";
+                var bytes = new Uint8Array(e.target.result);
+                var length = bytes.byteLength;
+                for (var i = 0; i < length; i++) {
+                    binary += String.fromCharCode(bytes[i]);
+                }
+                // call 'xlsx' to read the file
+                var workbook = XLSX.read(binary, { type: 'binary', cellDates: true, cellStyles: true });
+                var sheet_name_list = workbook.SheetNames;
+                sheet_name_list.forEach(function (y) {
+                    
+                    var exceljson = XLSX.utils.sheet_to_json(workbook.Sheets[y]);
+					//this exceljson has every row with header
+                    if (exceljson.length > 0) {
+                        exceljson.forEach(function (excelRow) {
+                            if (excelRow != null && Object.keys(excelRow).length > 0) {
+                               //code goes here
+                            }
+                        });
+
+                    }
+                });
+            };
+            fileReader.readAsArrayBuffer(file);
+                       
+        });
+        
+    });
+</script>
+<div class='bootstrap'>
+    <div class='container'>
+        <div class="col-md-6 offset-md-2">
+            <div class="card">
+                <div class="card-header">
+                Upload a file
+                </div>
+                <div class="card-body">
+                    <div class="custom-file">
+                        <input type="file" class="custom-file-input" id="excelfile">
+                        <label class="custom-file-label" for="excelfile">Choose file</label>
+                        <span class="help-block" style='display:none;color:red;'></span>
+                    </div>
+                 </div>
+            </div>
+        </div>
+    </div>
+</div>
