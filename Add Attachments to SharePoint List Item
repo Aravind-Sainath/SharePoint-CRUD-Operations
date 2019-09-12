@@ -1,0 +1,41 @@
+var getFileBuffer = function (file) {
+    var deferred = $.Deferred();
+    var reader = new FileReader();
+    reader.onload = function (e) {
+        deferred.resolve(e.target.result);
+    }
+    reader.onerror = function (e) {
+        deferred.reject(e.target.error);
+    }
+    reader.readAsArrayBuffer(file);
+    return deferred.promise();
+};
+
+
+function uploadattachment(id, listname) {
+    if ($("#attachmentfile")[0].files.length > 0) {
+        var file = $("#attachmentfile")[0].files[0];
+        getFileBuffer(file).then(function (buffer) {
+            $.ajax({
+                url: _spPageContextInfo.webAbsoluteUrl + "/_api/web/lists/getbytitle('" + listname + "')/items(" + id + ")/AttachmentFiles/add(FileName='" + file.name + "')",
+                method: 'POST',
+                data: buffer,
+                processData: false,
+                headers: {
+                    "Accept": "application/json; odata=verbose",
+                    "content-type": "application/json; odata=verbose",
+                    "X-RequestDigest": document.getElementById("__REQUESTDIGEST").value
+                },
+                success: function () {
+
+                },
+                error: function (data) {
+
+                }
+            });
+        });
+    }
+}
+
+//Add following HTML code
+<input type="file" id="attachmentfile">	
