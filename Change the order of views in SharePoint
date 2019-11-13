@@ -1,0 +1,54 @@
+
+(function () {     
+   
+if (typeof _spPageContextInfo != "undefined" && _spPageContextInfo != null) {
+    //-- MDS enabled on our site
+    MdsRegisterField()
+} else {
+    //-- MDS no enabled on our site
+    RegisterField()
+}
+
+function RegisterField() {
+                RegisterFavoriteColor();
+}
+
+function MdsRegisterField() {
+    var thisUrl = _spPageContextInfo.webServerRelativeUrl + "/SiteAssets/CustomNavBar.js";
+    RegisterFavoriteColor();
+    RegisterModuleInit(thisUrl, RegisterFavoriteColor)
+}
+
+ 
+function RegisterFavoriteColor()
+{    
+                SPClientTemplates.TemplateManager.RegisterTemplateOverrides({
+                  'Templates': {
+                                'Header': renderHeaderTemplateForDocuments
+                  }
+                }); 
+}
+
+function renderHeaderTemplateForDocuments(renderCtx, fRenderHeaderColumnNames)
+{
+                var viewData = eval(renderCtx.ListSchema.ViewSelectorPivotMenuOptions);
+                // update with an integer to specify the number of displayed views
+                ClientPivotControl.prototype.SurfacedPivotCount = 7;   //display ALL available menu options
+                viewData.sort(compareMenuOptions);  //sort menu options in order specified in the array
+                renderCtx.ListSchema.ViewSelectorPivotMenuOptions = JSON.stringify(viewData);
+                return RenderHeaderTemplate(renderCtx, fRenderHeaderColumnNames); //render Header template
+}
+
+function compareMenuOptions(a,b) {
+                var viewNames = ['All Items','Modify this View','Create View',soo on];
+                if(a.DisplayText != undefined && b.DisplayText != undefined ){
+                                   var x = viewNames.indexOf(a.DisplayText);
+                                   var y = viewNames.indexOf(b.DisplayText);
+                                  if (x > y)
+                                                return 1;
+                                  if (x < y)
+                                                return -1;
+                }
+                return 0;
+}
+})();
